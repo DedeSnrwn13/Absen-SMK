@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\{Route, Auth};
 
 /*
 |--------------------------------------------------------------------------
@@ -17,14 +17,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/dashboard/teacher/list', 'AdminController@index');
-Route::get('/admin/dashboard/teacher/details', 'AdminController@details');
+Auth::routes();
 
-Route::get('/admin/dashboard/working-hours', 'AdminController@working');
+// guest
+Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/admin/dashboard/attendance-list', 'AdminController@attendance');
-Route::get('/admin/dashboard/attendance/details', 'AdminController@detailAbsen');
+// Admin
+Route::group(['middleware' => ['role:admin']], function () {
+    Route::get('/admin/dashboard/teacher/list', 'AdminController@index');
+    Route::get('/admin/dashboard/teacher/details', 'AdminController@details');
 
+    Route::get('/admin/dashboard/working-hours', 'AdminController@working');
 
-Route::get('signin/teacher', 'TeacherController@login');
+    Route::get('/admin/dashboard/attendance-list', 'AdminController@attendance');
+    Route::get('/admin/dashboard/attendance/details', 'AdminController@detailAbsen');
+});
+
+// Guru
+Route::group(['middleware' => ['role:teacher']], function () {
+    Route::get('/teacher/checkin', 'TeacherController@checkin');
+    Route::get('/teacher/report', 'TeacherController@report');
+});
+
 

@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+
+.nama {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 33px;
+
+    /* identical to box height */
+    color: #000000;
+
+    margin-top: 18px;
+    margin-bottom: 3px;
+}
+
+.role {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 25px;
+    /* identical to box height */
+
+    color: #000000;
+
+    opacity: 0.5;
+}
+
+.time {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+
+    /* identical to box height */
+
+    color: #28ABB9;
+}
+
+.tanggal {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 25px;
+
+    /* identical to box height */
+
+    color: #000000;
+}
+
+#checkin {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#view {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    margin-top: 24px;
+}
+
+/*style untuk popup */
+
+#popup {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    z-index: 99999999999;
+    transition: all 1s;
+}
+
+.popup-container {
+    width: 393px;
+    position: relative;
+    margin: 6% auto;
+    padding: 80px 44px;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+
+  /* style untuk isi popup */
+.berhasil {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 27px;
+
+    color: #000000;
+    margin-top: 24px;
+}
+
+.desk {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 25px;
+    text-align: center;
+
+    color: #000000;
+
+    opacity: 0.8;
+    margin-top: 12px;
+}
+
+.tutup {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 27px;
+    margin-top: 50px;
+    color: #9A9A9A;
+}

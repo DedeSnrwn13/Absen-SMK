@@ -7,6 +7,8 @@
     line-height: 49px;
     /* identical to box height */
     color: #111111;
+
+    opacity: .8;
 }
 
 .title b {
