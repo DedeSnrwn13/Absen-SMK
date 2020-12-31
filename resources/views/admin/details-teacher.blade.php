@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title') Dashboard Detail Data Guru - Admin @endsection
+@section('title') Detail Data Guru - Dashboard Admin @endsection
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/details-teacher.css') }}">
@@ -18,7 +18,7 @@
         Daftar Guru
     </a>
 
-    <a class="nav-link clock" href="/admin/dashboard/working-hours" >
+    <a class="nav-link clock" href="{{ route('admin.working.hours') }}">
         <div class="sb-nav-link-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 8V12L15 15L12 8ZM21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -38,16 +38,22 @@
 @endsection
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success mt-3" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <h1 class="title">Daftar Guru</h1>
 
     <div class="line"></div>
 
-    <button type="button" class="btn btn-outline-info mt-2">
-        <a href="/admin/dashboard/teacher/list" style="text-decoration: none;">
-            <i class="fas fa-long-arrow-alt-left"></i>
-            KEMBALI
-        </a>
-    </button>
+
+    <a href="/admin/dashboard/teacher/list" class="btn btn-outline-info mt-2">
+        <i class="fas fa-long-arrow-alt-left"></i>
+        KEMBALI
+    </a>
+
 
     <div class="row mt-3">
         <div class="col-md-3">
@@ -58,13 +64,13 @@
                 <div class="card-header">
                     Foto Profil
                 </div>
-                <div class="imgWrap d-flex justify-content-center">
-                    <img src="" id="imgView" class="card-img-top img-fluid" style="width: 180px; height: 180px; object-fit: cover; object-position: center; border-radius: 4px;">
-                </div>
                 <div class="card-body">
-                    <div class="custom-file">
-                        <input type="file" id="inputFile" class="imgFile custom-file-input" aria-describedby="inputGroupFileAddon01">
-                        <label class="custom-file-label" for="inputFile">Choose file</label>
+                    <div class="imgWrap d-flex justify-content-center">
+                    @if($teacher->avatar==null)
+                        <img src="{{  asset('img/default.png') }}" id="imgView" class="card-img-top img-fluid" style="width: 180px; height: 180px; object-fit: cover; object-position: center; border-radius: 4px;">
+                    @else
+                        <img src="{{ asset('storage/'. $teacher->avatar) }}" id="imgView" class="card-img-top img-fluid" style="width: 180px; height: 180px; object-fit: cover; object-position: center; border-radius: 4px;">
+                     @endif
                     </div>
                 </div>
             </div>
@@ -79,53 +85,49 @@
                     <form>
                         <div class="form-row">
                             <span class="mb-4 col-md-12">Informasi Pribadi</span>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label for="inputNik">NIK.</label>
-                                <input type="nik" class="form-control" id="inputNik">
+                                <input type="number" class="form-control" id="inputNik" value="{{ $teacher->nik }}" readonly>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label for="inputNamaLengkap">NAMA LENGKAP</label>
-                                <input type="nama" class="form-control" id="inputNamaLengkap">
+                                <input type="text" class="form-control" id="inputNamaLengkap" value="{{ $teacher->name }}" readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputMataPelajaran">Mata Pelajaran</label>
+                                <input type="text" class="form-control" id="inputMataPelajaran" value="{{ $teacher->subjects }}" readonly>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="inputNoTelp">NO. TELP</label>
-                                <input type="number" class="form-control" id="inputNoTelp">
+                                <input type="number" class="form-control" id="inputNoTelp" value="{{ $teacher->no_hp }}" readonly>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="inputEmail">E-MAIL</label>
-                                <input type="email" class="form-control" id="inputEmail">
+                                <input type="text" class="form-control" id="inputEmail" value="{{ $teacher->user->email }}" readonly>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="inputProgramStudi">PROGRAM STUDI</label>
-                                <select id="inputProgramStudi" class="form-control">
-                                    <option selected>~PILIH PROGRAM STUDI~</option>
-                                    <option>MTK</option>
-                                    <option value="">PAI</option>
-                                </select>
+                                <input type="text" class="form-control" id="inputProgramStudi" value="{{ $teacher->major }}" readonly>
                             </div>
                             <span class="mb-4 mt-2 col-md-12">Informasi Pribadi</span>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="inputAddress">USERNAME</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="">
+                                <label for="inputUsername">USERNAME</label>
+                                <input type="text" class="form-control" id="inputUsername" value="{{ $teacher->username }}" readonly>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="inputAddress2">PASSWORD</label>
-                                <input type="text" class="form-control" id="inputAddress2" placeholder="">
+                                <label for="inputPassword">PASSWORD</label>
+                                <input type="text" class="form-control" id="inputPassword" value="{{ $teacher->user->password }}" readonly>
                             </div>
                         </div>
                         <div class="mt-3">
-                            <button type="button" class="btn btn-lg btn-outline-info float-left">
+                            <a href="/admin/dashboard/teacher/{{ $teacher->id }}/edit" class="btn btn-lg btn-outline-info float-left">
                                 <i class="far fa-edit"></i>
                                 EDIT
-                            </button>
-                            <button type="submit" class="btn btn-lg btn-info float-right">
-                                <i class="far fa-save"></i>
-                                SIMPAN
-                            </button>
+                            </a>
                         </div>
                     </form>
                 </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app-two')
 
 @section('title')
-    Log In - Admin
+    Log In - SMKN 1 CIBADAK
 @endsection
 
 @section('css')

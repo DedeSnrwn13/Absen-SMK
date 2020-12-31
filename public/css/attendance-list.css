@@ -21,3 +21,17 @@
 .btn-cari {
     background-color: #28ABB9;
 }
+
+.quest {
+    margin-top: 190px;
+}
+
+.quest span {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    /* identical to box height */
+    color: #000000;
+    opacity: 0.4;
+}

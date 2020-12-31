@@ -17,7 +17,7 @@
         Daftar Guru
     </a>
 
-    <a class="nav-link clock" href="/admin/dashboard/working-hours" >
+    <a class="nav-link clock" href="{{ route('admin.working.hours') }}">
         <div class="sb-nav-link-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 8V12L15 15L12 8ZM21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -43,106 +43,80 @@
 
     <div class="row">
         <div class="col-md-2">
-            <button type="button" class="btn btn-outline-info">
-                <a href="/admin/dashboard/attendance-list" style="text-decoration: none;">
+
+                <a class="btn btn-outline-info" href="/admin/dashboard/attendance-list" >
                     <i class="fas fa-long-arrow-alt-left"></i>
                     KEMBALI
                 </a>
-            </button>
+
         </div>
-        <div class="col-md-6 offset"></div>
-        <div class="col-md-4 d-flex justify-content-between">
-            <div class="col-md-4 px-0">
-
-                <select id="inputState" class="form-control">
-                    <option selected>Bulan</option>
-                    <option>Januari</option>
-                    <option value="">Februari</option>
-                    <option value="">Maret</option>
-                </select>
-            </div>
-
-            <div class="col-md-4">
-
-                <select id="inputState" class="form-control">
-                    <option selected>Tahun</option>
-                    <option>2020</option>
-                    <option value="">2019</option>
-                    <option value="">2018</option>
-                </select>
-            </div>
-
-            <div class="col-md-4 px-0">
-                <button type="button" class="btn btn-info">Tampilkan</button>
-            </div>
+        <div class="col-md-6 offset">
+            <!--
+            <form action="/admin/dashboard/attendance/{/details" method="GET">
+                <div class="input-group">
+                    <input name="search" class="form-control" type="search" placeholder="Pencarian berdasarkan Angka Tanggal" aria-label="Search"/>
+                    <div class="input-group-append">
+                        <button class="btn btn-info" type="button">
+                            <img name="search" src="" alt="">
+                        </button>
+                    </div>
+                </div>
+            </form>
+            -->
         </div>
+        <div class="col-md-4 offset"></div>
     </div>
 
 
     <!-- Jika ada data -->
     <div class="card mt-5">
         <div class="card-header">
-            <div class="row">
-                <div class="col-md-8 d-flex align-items-center">
-                    <div class="col-md-2 pl-0">
-                        <img src="{{ asset('img/pf-picture.jpg') }}" alt="">
+            <div class="row d-flex align-items-center" id="profileReport">
+
+                <div class="col-md-2">
+                    @if($teacher->avatar==null)
+                        <img src="{{  asset('img/default.png') }}" id="imgView" class="card-img-top img-fluid" style="width: 130px; height: 130px; object-fit: cover; object-position: center; border-radius: 4px;">
+                    @else
+                        <img src="{{ asset('storage/'. $teacher->avatar) }}" id="imgView" class="card-img-top img-fluid" style="width: 130px; height: 130px; object-fit: cover; object-position: center; border-radius: 4px;">
+                     @endif
+                </div>
+                <div class="col-md-7 offset">
+                     <div class="row mb-2">
+                        <span class="col-md-4 key">NAMA</span>
+                        <span class="col-md-1 tikwa d-flex justify-content-center">:</span>
+                        <span class="col-md-7 value">{{ $teacher->name }}</span>
                     </div>
-                    <div class="col-md-3 pr-0 pl-4">
-                        <span class="key">NAMA</span><br>
-                        <span class="key">Uji komptensi </span>
-                    </div>
-                    <div class="col-md-1 px-0 text-center">
-                        <span class="tikwa">:</span><br>
-                        <span class="tikwa">:</span>
-                    </div>
-                    <div class="col-md-5 pl-0">
-                        <span class="value">Abdul Rosit, Drs </span><br>
-                        <span class="value">Multimedia</span>
+                    <div class="row mt-2">
+                        <span class="col-md-4 key">UJI KOMPETENSI</span>
+                        <span class="col-md-1 tikwa d-flex justify-content-center">:</span>
+                        <span class="col-md-7 value">{{ $teacher->major }}</span>
                     </div>
                 </div>
-                <div class="col-md-1 offset"></div>
+                {{-- <div class="col-md-9 offset"></div> --}}
                 <div class="col-md-3">
-                    <button type="button" class="btn btn-outline-secondary float-right">
+                    <a href="/admin/dashboard/attendance/{{ $teacher->id }}/export/" class="btn btn-outline-secondary float-right">
                         <i class="far fa-file-alt"></i>
                         Export Laporan
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="text-center">No</th>
-                                <th scope="col">TANGGAL</th>
-                                <th scope="col">JAM MASUK</th>
-                                <th scope="col">JAM SELESAI</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row" class="num text-center">1</th>
-                                <td>Minggu, 01-11-2020</td>
-                                <td class="text-white"><span class="bg-info px-2 py-1">07:00:21</span></td>
-                                <td class="text-white"><span class="bg-info px-2 py-1">17:23:01</span></td>
-                            </tr>
-                            <tr class="bg-secondary text-white ">
-                                <th scope="row" class="num text-center ">2</th>
-                                <td>Minggu, 01-11-2020</td>
-                                <td><span class="px-2 py-1">-</span></td>
-                                <td><span class="px-2 py-1">-</span></td>
-                            </tr>
-                            <tr class="bg-danger text-white ">
-                                <th scope="row" class="num text-center">3</th>
-                                <td>Minggu, 01-11-2020</td>
-                                <td><span class="px-2 py-1">Tidak Hadir</span></td>
-                                <td><span class="px-2 py-1">Tidak Hadir</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-            </div>
+            @if ($data_absen->count())
+                @include('admin.export.details-attendance-table')
+                {{ $data_absen->links() }}
+            @else
+             <div class="row py-5">
+                 <div class="col-sm-4 px-0 offest"></div>
+                 <div class="col-sm-4 px-0 text-center">
+                     <div class="d-flex justify-content-center mb-3">
+                         <img src="{{ asset('img/quest.png') }}" alt="">
+                     </div>
+                     <span>Tidak ada data apapaun.</span>
+                 </div>
+                 <div class="col-sm-4 px-0 offest"></div>
+             </div>
+             @endif
         </div>
     </div>
 

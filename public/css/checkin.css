@@ -51,11 +51,11 @@
     color: #000000;
 }
 
-#checkin {
+.check {
     font-family: Open Sans;
     font-style: normal;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 14px;
 }
 
 #view {
@@ -63,12 +63,13 @@
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
-    margin-top: 24px;
+    margin-top: 40px;
 }
 
 /*style untuk popup */
 
-#popup {
+#popup1,
+#popup2 {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
@@ -83,7 +84,7 @@
 .popup-container {
     width: 393px;
     position: relative;
-    margin: 6% auto;
+    margin: 2% auto;
     padding: 80px 44px;
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -126,4 +127,12 @@
     line-height: 27px;
     margin-top: 50px;
     color: #9A9A9A;
+}
+
+
+@media screen and (max-width: 375px) {
+    .popup-container {
+        width: 300px;
+        margin: 10% auto;
+    }
 }

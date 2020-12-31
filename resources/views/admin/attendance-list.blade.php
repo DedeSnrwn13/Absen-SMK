@@ -17,7 +17,7 @@
         Daftar Guru
     </a>
 
-    <a class="nav-link clock" href="/admin/dashboard/working-hours" >
+    <a class="nav-link clock" href="{{ route('admin.working.hours') }}">
         <div class="sb-nav-link-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 8V12L15 15L12 8ZM21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -41,79 +41,23 @@
 
     <div class="line"></div>
     <div class="row">
-        <div class="col-md-3">
-            <form class="d-none d-md-inline-block form-inline ml-auto w-100 my-2 my-md-0">
+        <div class="col-md-4">
+            <form action="/admin/dashboard/attendance-list" method="GET">
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Pencarian nama guru..." aria-label="Search" aria-describedby="basic-addon2" />
+                    <input name="search" class="form-control" type="search" placeholder="Cari berdasarkan tanggal dan jam.." aria-label="Search"/>
                     <div class="input-group-append">
-                        <button class="btn btn-info" type="button">
-                            <img src="{{ asset('img/cari.png') }}" alt="">
+                        <button class="btn btn-info" type="submit">
+                            <img name="search" src="{{ asset('img/cari.png') }}" alt="">
                         </button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="col-md-2">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Semua
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </div>
-        </div>
-        <div class="col-md-5 offset"></div>
-        <div class="col-md-2 ">
-
-
-
-            <!-- Modal -->
-            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" style="max-width: 365px !important;">
-                    <div class="modal-content">
-                        <div class="modal-header " style="border-bottom: 0">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <div class="isi justify-content-center d-flex mb-3">
-                                <img src="{{ asset('img/excel.png') }}" alt="">
-                            </div>
-                            <span >
-                                Silahkan uploud file excel data <br> guru yang ingin dimasukan
-                            </span>
-                            <div class="input-group mt-3 px-3 justify-content-center">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupFileAddon01">Choose file</span>
-                                </div>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                                    <label class="custom-file-label" for="inputGroupFile01">no file choosen</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-center d-flex mb-3" style="border-top: 0">
-                            <button type="button" class="btn btn-upload">Upload</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        <div class="col-md-8 offset"></div>
     </div>
-    <!-- Jika tidak ada data
-    <div class="quest text-center">
-        <div class="d-flex justify-content-center mb-3">
-            <img src="{{ asset('img/quest.png') }}" alt="">
-        </div>
-        <span>Tidak ada data apapaun.</span>
-    </div>
-    -->
 
+
+    @if ($absens->count())
     <!-- Jika ada data -->
     <div class="table-responsive mt-4">
 
@@ -122,32 +66,55 @@
                     <tr>
                         <th scope="col" class="text-center">No</th>
                         <th scope="col">NAMA</th>
-                        <th scope="col">JK</th>
                         <th scope="col">PEROGRAM STUDI</th>
-                        <th scope="col">STATUS</th>
+                        <th scope="col">TANGGAL</th>
+                        <th scope="col">JAM MASUK</th>
+                        <th scope="col">JAM PULANG</th>
                         <th scope="col">AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row" class="num text-center">1</th>
-                        <td>Abdul Rosit, Drs</td>
-                        <td>L</td>
-                        <td>TKJ</td>
-                        <td class="text-center d-flex align-items-center">
-                            <span class="bg-success py-1 px-2 text-white rounded">HADIR</span>
-                        </td>
-                        <td>
-                            <a href="/admin/dashboard/attendance/details" class="btn btn-sm btn-outline-info" >
-                                <i class="fas fa-search"></i>
-                                Detail
-                            </a>
-                        </td>
-                    </tr>
-
+                    @php
+                        $no = 1;
+                    @endphp
+                    @foreach ($absens as $absen)
+                        <tr>
+                            <th scope="row" class="num text-center">{{ $no }}</th>
+                            <td>{{ $absen->teacher->name }}</td>
+                            <td>{{ $absen->teacher->major }}</td>
+                            <td class="font-weight-bold">{{ $absen->date }}</td>
+                            <td>
+                                <span class="bg-info py-1 px-2 text-white rounded">
+                                    {{ $absen->time_in }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="bg-info py-1 px-2 text-white rounded">
+                                    {{ $absen->time_out }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="/admin/dashboard/attendance/{{ $absen->teacher->id }}/details" class="btn btn-sm btn-outline-info" >
+                                    <i class="fas fa-search"></i>
+                                    Detail
+                                </a>
+                            </td>
+                        </tr>
+                        @php
+                            $no++;
+                        @endphp
+                    @endforeach
                 </tbody>
             </table>
-
+            {{ $absens->links() }}
     </div>
-
+    @else
+        <!--Jika tidak ada data -->
+        <div class="quest text-center">
+            <div class="d-flex justify-content-center mb-3">
+                <img src="{{ asset('img/quest.png') }}" alt="">
+            </div>
+            <span>Tidak ada data apapaun.</span>
+        </div>
+    @endif
 @endsection

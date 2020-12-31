@@ -18,7 +18,7 @@
         Daftar Guru
     </a>
 
-    <a class="nav-link clock aktif" href="/admin/dashboard/working-hours" >
+    <a class="nav-link clock aktif" href="{{ route('admin.working.hours') }}" >
         <div class="sb-nav-link-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 8V12L15 15L12 8ZM21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -38,14 +38,18 @@
 @endsection
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success mt-3" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
     <h1 class="title">JAM KERJA</h1>
 
     <div class="line"></div>
 
 
     <!-- Jika ada data -->
-    <div class="table-responsive mt-4">
-
+        <div class="table-responsive mt-4">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -57,59 +61,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row" class="num text-center">1</th>
-                        <td>Jam Masuk</td>
-                        <td>06:00:00</td>
-                        <td>08:00:00</td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#jam">
-                                <i class="far fa-edit"></i>
-                                EDIT
-                            </button>
-                        </td>
-                    </tr>
+                        <tr>
+                            <th scope="row" class="num text-center">1</th>
+                            <td>Jam Masuk</td>
+                            @foreach ($starts as $start)
+                                <td>{{ $start->hours_start }}</td>
+                                <td>{{ $start->hours_over }}</td>
+                                <td>
+                                    <a href="/admin/dashboard/working-hours/hour-start/{{ $start->id }}/edit" class="btn btn-sm btn-outline-info">
+                                        <i class="far fa-edit"></i>
+                                        EDIT
+                                    </a>
+                                </td>
+                            @endforeach
+                        </tr>
                     <tr>
                         <th scope="row" class="num text-center">2</th>
                         <td>Jam Pulang</td>
-                        <td>17:00:00</td>
-                        <td>21:00:00</td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-outline-info " data-toggle="modal" data-target="#jam">
-                                <i class="far fa-edit"></i>
-                                EDIT
-                            </button>
-                        </td>
+                        @foreach ($overs as $over)
+                            <td>{{ $over->hours_start }}</td>
+                            <td>{{ $over->hours_over }}</td>
+                            <td>
+                                <a href="/admin/dashboard/working-hours/hour-over/{{ $over->id }}/edit" class="btn btn-sm btn-outline-info">
+                                    <i class="far fa-edit"></i>
+                                    EDIT
+                                </a>
+                            </td>
+                        @endforeach
                     </tr>
                 </tbody>
             </table>
-
-            <!-- Vertically centered modal -->
-            <div class="modal fade" id="jam" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="jamLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <span class="modal-title text-uppercase" id="staticBackdropLabel">Edit Jam Kerja</span>
-                        </div>
-                        <div class="modal-body">
-                            <form action="">
-                                <div class="form-group">
-                                    <label for="inputJamMulai">Jam Mulai :</label>
-                                    <input type="text" class="form-control" id="inputJamMulai" placeholder="06:00:00">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputJamSelesai">Jam Selesai :</label>
-                                    <input type="text" class="form-control" id="inputJamSelesai" placeholder="08:00:00">
-                                </div>
-                                <div class="mt-4">
-                                    <button type="button" class="btn btn-outline-secondary btn-lg float-left" data-dismiss="modal">Tutup</button>
-                                    <button type="button" class="btn btn-info btn-lg float-right">Update</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </div>
-
+        </div>
 @endsection

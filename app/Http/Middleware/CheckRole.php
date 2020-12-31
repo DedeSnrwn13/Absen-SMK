@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
@@ -15,7 +16,7 @@ class CheckRole
      */
     public function handle($request, Closure $next, ...$roles)
     {
-        if(in_array($request->user()->roles->description, $roles)) {
+        if(in_array($request->user()->role, $roles)) {
             return $next($request);
         } else {
             return redirect('/');

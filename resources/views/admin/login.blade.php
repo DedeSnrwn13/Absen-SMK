@@ -1,4 +1,4 @@
-@extends('layouts.app-two')
+@extends('layouts.app')
 
 @section('title')
     Log In - Admin
@@ -9,13 +9,13 @@
 @endsection
 
 @section('content')
-    <div class="row d-flex justify-content-center" style="margin-top: 140px;">
+    <div class="row d-flex justify-content-center" >
         <div class="col-md-4 offset"></div>
-        <div class="col-md-4">
+        <div class="col-md-4" style="margin-top: 200px;">
             <div class="col-md-12 text-center mb-3">
                 <span class="title"><b>LOGIN</b> ADMIN</span>
             </div>
-            <form action="{{ route('post.login.admin') }}" method="POST">
+            <form action="/login/admin" method="POST">
                 @csrf
 
                 <div class="form-group col-md-12">

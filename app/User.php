@@ -5,12 +5,8 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
-
 class User extends Authenticatable
 {
-    use HasRoles;
-
     use Notifiable;
 
     /**
@@ -19,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'avatar', 'nik', 'name', 'no_hp', 'email', 'major', 'subjects', 'username', 'password',
+        'name', 'role', 'email', 'password', 'remember_token'
     ];
 
     /**
@@ -40,5 +36,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // public function role() {
+    //     return $this->belongsTo('App\Roles');
+    // }
 
+    public function teacher() {
+        return $this->HasOne('App\Teacher');
+    }
 }

@@ -17,7 +17,7 @@
         Daftar Guru
     </a>
 
-    <a class="nav-link clock" href="/admin/dashboard/working-hours" >
+    <a class="nav-link clock" href="{{ route('admin.working.hours') }}" >
         <div class="sb-nav-link-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 8V12L15 15L12 8ZM21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -37,35 +37,40 @@
 @endsection
 
 @section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger mt-3">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert alert-success mt-3" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <h1 class="title">Daftar Guru</h1>
 
     <div class="line"></div>
+
     <div class="row">
-        <div class="col-md-3">
-            <form class="d-none d-md-inline-block form-inline ml-auto w-100 my-2 my-md-0">
+        <div class="col-md-4">
+            <form action="/admin/dashboard/teacher/list" method="GET">
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Pencarian nama guru..." aria-label="Search" aria-describedby="basic-addon2" />
+                    <input name="search" class="form-control" type="search" placeholder="Pencarian nama guru.." aria-label="Search"/>
                     <div class="input-group-append">
-                        <button class="btn btn-info" type="button">
-                            <img src="{{ asset('img/cari.png') }}" alt="">
+                        <button class="btn btn-info" type="submit">
+                            <img name="search" src="{{ asset('img/cari.png') }}" alt="">
                         </button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="col-md-2">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Semua
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </div>
-        </div>
-        <div class="col-md-5 offset"></div>
+        <div class="col-md-6 offset"></div>
         <div class="col-md-2 ">
 
             <!-- Button trigger modal -->
@@ -83,65 +88,79 @@
                             </button>
                         </div>
                         <div class="modal-body text-center">
-                            <div class="isi justify-content-center d-flex mb-3">
-                                <img src="{{ asset('img/excel.png') }}" alt="">
-                            </div>
-                            <span >
-                                Silahkan uploud file excel data <br> guru yang ingin dimasukan
-                            </span>
-                            <div class="input-group mt-3 px-3 justify-content-center">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupFileAddon01">Choose file</span>
+                            <form action="{{ route('teacher.import') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="isi justify-content-center d-flex mb-3">
+                                    <img src="{{ asset('img/excel.png') }}" alt="">
                                 </div>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                                    <label class="custom-file-label" for="inputGroupFile01">no file choosen</label>
+                                <span >
+                                    Silahkan uploud file excel data <br> guru yang ingin dimasukan
+                                </span>
+                                <div class="input-group mt-3 px-3 justify-content-center">
+                                    <div class="custom-file border-darken-1">
+                                        <input type="file" class="form-control @error('excel') is-invalid @enderror" name="excel" id="InputExcel" required>
+                                    </div>
+                                    @error('excel')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-center d-flex mb-3" style="border-top: 0">
-                            <button type="button" class="btn btn-info">Upload</button>
+                                <div class="modal-footer justify-content-center d-flex mb-3" style="border-top: 0">
+                                    <button type="submit" class="btn btn-info">Upload</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
-    <!-- Jika tidak ada data
-    <div class="quest text-center">
-        <div class="d-flex justify-content-center mb-3">
-            <img src="{{ asset('img/quest.png') }}" alt="">
-        </div>
-        <span>Tidak ada data apapaun.</span>
-    </div>
-    -->
 
-    <!-- Jika ada data -->
-    <div class="table-responsive mt-4">
+        @if ($teachers->count())
+            <!-- Jika ada data -->
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">No</th>
+                            <th scope="col">NAMA</th>
+                            <th scope="col">JK</th>
+                            <th scope="col">PEROGRAM STUDI</th>
+                            <th scope="col">MATA PELAJARAN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $no = 1;
+                        @endphp
+                        @foreach ($teachers as $teacher)
+                        <tr>
+                            <th scope="row" class="num text-center">{{ $no }}</th>
+                            <td class="nama"><a href="/admin/dashboard/teacher/{{ $teacher->id }}/details">{{ $teacher->name }}</a> </td>
+                            <td>{{ $teacher->gender }}</td>
+                            <td>{{ $teacher->major }}</td>
+                            <td>{{ $teacher->subjects }}</td>
+                        </tr>
+                        @php
+                            $no++;
+                        @endphp
+                        @endforeach
+                    </tbody>
+                </table>
+                {{ $teachers->links() }}
+            </div>
+        @else
+            <!-- Jika tidak ada data -->
 
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col" class="text-center">No</th>
-                        <th scope="col">NAMA</th>
-                        <th scope="col">JK</th>
-                        <th scope="col">PEROGRAM STUDI</th>
-                        <th scope="col">MATA PELAJARAN</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row" class="num text-center">1</th>
-                        <td class="nama"><a href="/admin/dashboard/teacher/details">Abdul Rosit, Drs</a> </td>
-                        <td>L</td>
-                        <td>TKJ</td>
-                        <td>Komputer</td>
-                    </tr>
+                <div class="col-md-4 offest"></div>
+                <div class="col-md-4 quest text-center">
+                    <div class="d-flex justify-content-center mb-3">
+                        <img src="{{ asset('img/quest.png') }}" alt="">
+                    </div>
+                    <span>Tidak ada data apapaun.</span>
+                </div>
+                <div class="col-md-4 offest"></div>
 
-                </tbody>
-            </table>
-
-    </div>
+        @endif
 
 @endsection
