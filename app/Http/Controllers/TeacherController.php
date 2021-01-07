@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\{Absen, HourStart, HourOver};
+use App\{User, Absen, HourStart, HourOver};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,9 +31,9 @@ class TeacherController extends Controller
 
         if(Auth::attempt($request->only('email', 'password'))){
             return redirect('/teacher/checkin');
+        } else {
+            return redirect()->back()->with('error', 'Kami Tidak dapat menemukan kredensial yang Anda masukkan.');
         }
-
-        return redirect()->route('login.teacher');
     }
 
     public function checkin()

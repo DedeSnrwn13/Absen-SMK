@@ -4,10 +4,11 @@
 
 @section('css')
     <link href="{{ asset('css/attendance-list.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
 @endsection
 
 @section('menu')
-    <a class="nav-link dashboard " href="/admin/dashboard/teacher/list">
+    <a class="nav-link dashboard " href="{{  url('/admin/dashboard/teacher/list') }}">
         <div class="sb-nav-link-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="Frame">
             <path id="Vector" d="M7 7H17M19 11H5H19ZM19 11C19.5304 11 20.0391 11.2107 20.4142 11.5858C20.7893 11.9609 21 12.4696 21 13V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V13C3 12.4696 3.21071 11.9609 3.58579 11.5858C3.96086 11.2107 4.46957 11 5 11H19ZM19 11V9C19 8.46957 18.7893 7.96086 18.4142 7.58579C18.0391 7.21071 17.5304 7 17 7L19 11ZM5 11V9C5 8.46957 5.21071 7.96086 5.58579 7.58579C5.96086 7.21071 6.46957 7 7 7L5 11ZM7 7V5C7 4.46957 7.21071 3.96086 7.58579 3.58579C7.96086 3.21071 8.46957 3 9 3H15C15.5304 3 16.0391 3.21071 16.4142 3.58579C16.7893 3.96086 17 4.46957 17 5V7H7Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -26,7 +27,7 @@
         jam kerja
     </a>
 
-    <a class="nav-link absen aktif" href="/admin/dashboard/attendance-list" >
+    <a class="nav-link absen aktif" href="{{  url('/admin/dashboard/attendance-list') }}" >
         <div class="sb-nav-link-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9 16H9.01M9 5H7C6.46957 5 5.96086 5.21071 5.58579 5.58579C5.21071 5.96086 5 6.46957 5 7V19C5 19.5304 5.21071 20.0391 5.58579 20.4142C5.96086 20.7893 6.46957 21 7 21H17C17.5304 21 18.0391 20.7893 18.4142 20.4142C18.7893 20.0391 19 19.5304 19 19V7C19 6.46957 18.7893 5.96086 18.4142 5.58579C18.0391 5.21071 17.5304 5 17 5H15H9ZM9 5C9 5.53043 9.21071 6.03914 9.58579 6.41421C9.96086 6.78929 10.4696 7 11 7H13C13.5304 7 14.0391 6.78929 14.4142 6.41421C14.7893 6.03914 15 5.53043 15 5H9ZM9 5C9 4.46957 9.21071 3.96086 9.58579 3.58579C9.96086 3.21071 10.4696 3 11 3H13C13.5304 3 14.0391 3.21071 14.4142 3.58579C14.7893 3.96086 15 4.46957 15 5H9ZM12 12H15H12ZM12 16H15H12ZM9 12H9.01H9Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -37,23 +38,50 @@
 @endsection
 
 @section('content')
+    @if (session()->get('gagal'))
+        <div class="alert alert-danger text-justify" role="alert">
+            {{ session('gagal') }}
+        </div>
+    @endif
     <h1 class="title">Daftar Guru</h1>
 
     <div class="line"></div>
     <div class="row">
         <div class="col-md-4">
-            <form action="/admin/dashboard/attendance-list" method="GET">
+            <form action="{{ url('/admin/dashboard/attendance-list') }}" method="GET">
                 <div class="input-group">
-                    <input name="search" class="form-control" type="search" placeholder="Cari berdasarkan tanggal dan jam.." aria-label="Search"/>
+                    <input name="search" class="form-control" type="search" placeholder="Cari berdasarkan tanggal dan jam..." aria-label="Search"/>
                     <div class="input-group-append">
                         <button class="btn btn-info" type="submit">
-                            <img name="search" src="{{ asset('img/cari.png') }}" alt="">
+                            <i class="fa fa-search" name="search" ></i>
                         </button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="col-md-8 offset"></div>
+        <form action="{{ url('/admin/dashboard/attendance-list/periode') }}" method="GET" class="col-md-6">
+            <div class="row input-daterange">
+
+                    <div class="form-group col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" name="from_date" class="form-control" id="from_date" placeholder="Dari Tanggal" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-5">
+                        <div class="d-flex align-items-center">
+                            <input type="text" name="to_date" class="form-control" id="to_date" placeholder="Sampai Tanggal" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2" style="border-top: 0">
+                        <button type="submit" class="btn btn-info" name="filter" id="filter">
+                            FILTER
+                        </button>
+                    </div>
+
+            </div>
+        </form>
+        <div class="col-md-2 offest"></div>
     </div>
 
 
@@ -117,4 +145,24 @@
             <span>Tidak ada data apapaun.</span>
         </div>
     @endif
+@endsection
+
+@section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            // $('.btn-filter').click(function (e) {
+            //     e.preventDefault();
+
+            //     $('#modal-filter').modal();
+            // });
+
+            //Iniliasi datepicker pada class input
+            $('.input-daterange').datepicker({
+                todayBtn: 'linked',
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            });
+        });
+    </script>
 @endsection

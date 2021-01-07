@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
+        @include('layouts.head')
+        @laravelPWA
         <title>@yield('title')</title>
         @yield('css')
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<link rel="icon" href="{{ asset('icons/icon-72x72.png') }}" type="image/icon">
         <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand ">
-            <a class="navbar-brand" href="/admin/dashboard/teacher/list">SMKN 1 CIBADAK</a>
-            <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
 
-            </div>
-            <!-- Navbar-->
-            <ul class="navbar-nav ml-auto ml-md-0">
-                @auth
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link text-white" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }}
-                        </a>
-                    </li>
-                @endauth
-            </ul>
-        </nav>
+            <nav class="sb-topnav navbar navbar-expand">
+                <a class="navbar-brand" href="{{ url('/admin/dashboard/teacher/list') }}">SMKN 1 CIBADAK</a>
+                <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+                <!-- Navbar Search-->
+                <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+
+                </div>
+                <!-- Navbar-->
+                <ul class="navbar-nav ml-auto ml-md-0">
+                    @auth
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link text-white" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
+                            </a>
+                        </li>
+                    @endauth
+                </ul>
+            </nav>
+
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion " id="sidenavAccordion">
+                <nav class="sb-sidenav accordion" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading text-white text-center mb-5">
-                                <!-- Menampilkan Jam (Aktif) -->
+                                <!-- Menampilkan Jam Aktif -->
                                 <div id="clock" style="font-weight: 600"></div>
                                 <script type="text/javascript">
                                 <!--
@@ -98,7 +97,7 @@
 
                         </div>
                     </div>
-                    <div class="sb-sidenav-footer d-flex">
+                    <div class="sb-sidenav-footer bg-info d-flex">
                         <a class="logout d-block w-100" href="{{ route('logout.admin') }}">
                             <div class="sb-nav-link-icon float-left pr-1">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -116,7 +115,7 @@
                         @yield('content')
                     </div>
                 </main>
-                <footer class="py-4 bg-light mt-auto">
+                <footer class="py-4 bg-light">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; SMKN 1 CIBADAK 2020</div>
@@ -126,15 +125,10 @@
                 </footer>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/scripts.js') }}"></script>
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script> --}}
-        {{-- <script src="{{ asset('demo/chart-area-demo.js') }}"></script>
-        <script src="{{ asset('demo/chart-bar-demo.js') }}"></script> --}}
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+        <script src="../js/scipts.js"></script>
         @yield('js')
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="{{ asset('demo/datatables-demo.js')}}"></script>
     </body>
 </html>

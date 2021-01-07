@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\HourStart;
+use Illuminate\Support\Facades\DB;
 
-class StartSeeder extends Seeder
+class HoursStartSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,10 +12,9 @@ class StartSeeder extends Seeder
      */
     public function run()
     {
-        //bikin isi untuk table
-        HourStart::create([
-            'hours_start' => '08:00:00',
-            'hours_over'  => '10:00:00',
+        DB::table('hour_starts')->insert([
+            'hours_start' => '00:00',
+            'hours_over'  => '00:00',
             'updated_by'  => 'Ini Admin',
         ]);
     }

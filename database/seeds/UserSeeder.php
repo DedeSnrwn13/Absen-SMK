@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
              'name'           => 'Ini Admin',
              'role'           => 'admin',
              'email'          => 'admin@test.app',
-             'password'       => bcrypt('12345678'),
+             'password'       => bcrypt('smk1cbdpwadmin01'),
              'remember_token' => Str::random(40),
          ]);
     }

@@ -1,29 +1,25 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\{Route, Auth};
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
-Route::view('/', 'index');
+// Guest
+Route::get('/', 'HomeController@index')->name('/');
+Route::get('/details-of-working-hours', 'TeacherController@jamkerja');
 
 Auth::routes();
 
-// Guest
-Route::get('/details-of-working-hours', 'TeacherController@jamkerja');
+Route::middleware('guest')->group(function () {
 
-// Login Admin
-Route::get('/login/admin', 'AdminController@loginAdmin')->name('login.admin');
-Route::post('/login/admin', 'AdminController@postLoginAdmin');
+    // Login Admin
+    Route::get('/login/admin', 'AdminController@loginAdmin')->name('login.admin');
+    Route::post('/login/admin', 'AdminController@postLoginAdmin');
+
+    // Login Guru
+    Route::get('/login', 'TeacherController@loginTeacher')->name('login.teacher');
+    Route::post('/login', 'TeacherController@postLoginTeacher');
+});
+
 
 // Admin
 Route::group(['middleware' => ['auth', 'check.role:admin']], function() {
@@ -44,6 +40,7 @@ Route::group(['middleware' => ['auth', 'check.role:admin']], function() {
     Route::post('/admin/dashboard/working-hours/hour-over/{id}/update', 'AdminController@updateHourOver');
 
     Route::get('/admin/dashboard/attendance-list', 'AdminController@attendance');
+    Route::get('/admin/dashboard/attendance-list/periode', 'AdminController@filterPeriode');
     Route::get('/admin/dashboard/attendance/{id}/details', 'AdminController@detailAbsen');
     // import
     Route::post('/admin/dashboard/teacher/import', 'AdminController@store')->name('teacher.import');
@@ -56,10 +53,6 @@ Route::group(['middleware' => ['auth', 'check.role:admin']], function() {
 
     Route::get('/admin/logout', 'AdminController@logoutAdmin')->name('logout.admin');
 });
-
-// Login Guru
-Route::get('/login', 'TeacherController@loginTeacher')->name('login.teacher');
-Route::post('/login', 'TeacherController@postLoginTeacher');
 
 // Guru
 Route::group(['middleware' => ['auth', 'check.role:teacher, admin']], function() {

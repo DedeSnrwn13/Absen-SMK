@@ -27,7 +27,7 @@
                         <div class="row">
                             <div class="col-md-3 offset"></div>
                             <div class="col-md-6">
-                                <a href="/teacher/checkin" class="btn btn-outline-secondary tutup w-100 py-3">Tutup</a>
+                                <a href="{{ url('/teacher/checkin') }}" class="btn btn-outline-secondary tutup w-100 py-3">Tutup</a>
                             </div>
                             <div class="col-md-3 offset"></div>
                         </div>
@@ -56,7 +56,7 @@
                         <div class="row">
                             <div class="col-md-3 offset"></div>
                             <div class="col-md-6">
-                                <a href="/teacher/checkin" class="btn btn-outline-secondary tutup w-100 py-3">Tutup</a>
+                                <a href="{{ url('/teacher/checkin') }}" class="btn btn-outline-secondary tutup w-100 py-3">Tutup</a>
                             </div>
                             <div class="col-md-3 offset"></div>
                         </div>
@@ -105,7 +105,7 @@
                 </span>
             </div>
             <div class="col-md-12">
-                <form action="/teacher/attendance" method="POST">
+                <form action="/{{ url('teacher/attendance') }}" method="POST">
                     @csrf
 
                     <div class="row">
@@ -125,7 +125,7 @@
                 <div class="row">
                     <div class="col-md-3 offset"></div>
                     <div class="col-md-6">
-                        <a href="/teacher/report-attendance" class="btn btn-outline-info w-100" id="view">Lihat Laporan</a>
+                        <a href="{{ url('/teacher/report-attendance') }}" class="btn btn-outline-info w-100" id="view">Lihat Laporan</a>
                     </div>
                     <div class="col-md-3 offset"></div>
                 </div>

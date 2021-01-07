@@ -18,7 +18,7 @@
                         <tr>
                             <th scope="row" class="num text-center">{{ $no }}</th>
                             <th class="text-info">{{ $absen->teacher->name }}</th>
-                            <td>{{ $absen->date }}</td>
+                            <td>{{ date('d F Y', strtotime($absen->date)) }}</td>
                             <td class="text-white"><span class="bg-info px-2 py-1">{{ $absen->time_in }}</span></td>
                             <td class="text-white"><span class="bg-info px-2 py-1">{{ $absen->time_out }}</span></td>
                         </tr>

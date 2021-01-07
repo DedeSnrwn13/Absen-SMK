@@ -7,12 +7,11 @@ use App\Imports\UsersImport;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\{User, Teacher, HourStart, HourOver, Absen};
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -31,9 +30,9 @@ class AdminController extends Controller
 
         if(Auth::attempt($request->only('email', 'password'))){
             return redirect('/admin/dashboard/teacher/list');
+        } else {
+            return redirect()->back()->with('error', 'Kami tidak mengenali Anda.');
         }
-
-        return redirect()->route('login.admin');
     }
 
     public function admin(Request $request)
@@ -42,6 +41,7 @@ class AdminController extends Controller
             $teachers = Teacher::where('name', 'LIKE', '%'.$request->search.'%')
                                 ->orWhere('major', 'LIKE', '%'.$request->search.'%')
                                 ->orWhere('gender', 'LIKE', '%'.$request->search.'%')
+                                ->orWhere('subjects', 'LIKE', '%'.$request->search.'%')
                                 ->orderBy('name', 'desc')
                                 ->paginate(20);
         } else {
@@ -60,7 +60,6 @@ class AdminController extends Controller
     public function edit($id)
     {
         $teacher = Teacher::findOrFail($id);
-        // $teacher = DB::table('teachers')->where('id', $id)->first();
 
         return view('admin.edit-teacher', compact('teacher'));
     }
@@ -68,38 +67,12 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         $teacher = Teacher::findOrFail($id);
-        // $user = User::findOrFail($id);
 
         $this->validate($request, [
             'avatar'   => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'username' => 'string|min:4|max:50',
             'email'    => 'string|email',
         ]);
-
-        // if ($request->hasFile('avatar')) {
-        //     Storage::delete($teacher->avatar);
-
-        //     $file = $request->file('avatar');
-        //     $filename = sha1($file->getClientOriginalName() . Carbon::now() . mt_rand()). '.'.$file->getClientOriginalExtension();
-
-        //     $file->storeAs('public/user/images', $filename);
-        //     $path ='public/user/images'. $teacher->avatar;
-
-        //     if(Storage::exists($path)) {
-        //         Storage::delete($path);
-        //     }
-
-        //     $teacher->avatar = $filename;
-
-        // }
-
-        // if ($request->hasFile('avatar')) {
-        //     $destination_path = 'public/images/profile';
-        //     $image = $request->file('avatar');
-        //     $image_name = $image->getClientOriginalName()
-        // }
-
-
 
         // menyimpan data file yang diupload ke variabel $file
         DB::table('users')
@@ -109,30 +82,6 @@ class AdminController extends Controller
                 'name'   => $request->name,
                 'role'   => 'teacher',
         ]);
-
-
-
-        // $teacher->user->save();
-
-        // if( $request->hasFile('avatar') ){
-        //     $file = $request->file('avatar');
-        //     $ext = $request->avatar->getClientOriginalExtension();
-        //     $filename = Carbon::now() . '.' . $ext;
-        //     $place = 'teacher/' . $filename;
-        //     Storage::put($place, File::get($file));
-        //     $teacher->avatar = $filename;
-        // }
-
-        // if($request->hasFile('avatar')) {
-        //     $request->file('avatar')->move('images/profile', $request->file('avatar')->getClientOriginalName());
-        //     $teacher->avatar = $request->file('avatar')->getClientOriginalName();
-        //     $teacher->save();
-        // }
-
-
-        // if ($request->hasFile('avatar')) {
-        //     $request->avatar->store('profile', 'public');
-        // }
 
         if ($request->hasFile('avatar')) {
             Storage::delete($teacher->avatar);
@@ -199,12 +148,6 @@ class AdminController extends Controller
 
     public function updateHourStart(Request $request, $id)
     {
-        // $this->validate($request, [
-        //     'hours_start' => 'nullable|unique:hour_starts,hours_start,',
-        //     'hours_over'  => 'nullable|unique:hour_starts,hours_over,',
-        //     'updated_by'  => 'required',
-        // ]);
-
         DB::table('hour_starts')
             ->where('id', $id)
             ->update([
@@ -226,11 +169,6 @@ class AdminController extends Controller
 
     public function updateHourOver(Request $request)
     {
-        // $this->validate($request, [
-        //     'hours_start' => 'nullable|unique:hour_overs,hours_start,',
-        //     'hours_over'  => 'nullable|unique:hour_overs,hours_over,',
-        //     'updated_by'  => 'required',
-        // ]);
 
         DB::table('hour_overs')->update([
             'hours_start' => $request->hours_start,
@@ -245,16 +183,34 @@ class AdminController extends Controller
     public function attendance(Request $request)
     {
         if($request->has('search')) {
+
             $absens = Absen::where('date', 'LIKE', '%'.$request->search.'%')
-                                ->orWhere('time_in', 'LIKE', '%'.$request->search.'%')
-                                ->orWhere('time_out', 'LIKE', '%'.$request->search.'%')
-                                ->orderBy('time_in', 'desc')
-                                ->paginate(20);
+                            ->orWhere('time_in', 'LIKE', '%'.$request->search.'%')
+                            ->orWhere('time_out', 'LIKE', '%'.$request->search.'%')
+                            ->orderBy('time_in', 'desc')
+                            ->paginate(120);
         } else {
-            $absens = Absen::orderBy('date', 'asc')->paginate(20);
+            $absens  = Absen::orderBy('date', 'desc')->paginate(120);
         }
 
         return view('admin.attendance-list', compact('absens'));
+    }
+
+    public function filterPeriode(Request $request)
+    {
+        // dd($request);
+        try {
+            $from_date = $request->from_date;
+            $to_date   = $request->to_date;
+
+            $absens = Absen::where('date','>=',$from_date)->whereDate('date','<=',$to_date)->orderBy('date', 'desc')->paginate(120);
+
+            return view('admin.attendance-list', compact('absens'));
+        }  catch (\Exception $e) {
+            Session::flash('gagal',$e->getMessage());
+
+            return redirect()->back();
+        }
     }
 
     public function detailAbsen($id)
@@ -282,10 +238,6 @@ class AdminController extends Controller
 
     public function exportExcel()
     {
-        // $teacher    = Teacher::findOrFail($id);
-        // $nama_guru  = $teacher->name;
-
-        // $nama_file = 'laporan_'.date('Y-m-d_H-i-s').'xlsx';
         return Excel::download(new UsersExport, 'absen.xlsx');
 
     }

@@ -9,13 +9,18 @@
 @endsection
 
 @section('content')
-<h1 class="title">Detail Absen</h1>
+<h1 class="title" style="margin-top: 90px;">Detail Absen</h1>
 
 <div class="line"></div>
 
+<a href="/teacher/checkin" class="btn btn-outline-info mt-2">
+    <i class="fas fa-long-arrow-alt-left"></i>
+    KEMBALI
+</a>
+
 
 <!-- Jika ada data -->
-<div class="card mt-5">
+<div class="card mt-3">
     <div class="card-header">
         <div class="row d-flex align-items-center" id="profileReport">
             <div class="col-md-2">
@@ -48,7 +53,7 @@
                                     <th scope="col" class="text-center">No</th>
                                     <th scope="col">TANGGAL</th>
                                     <th scope="col">JAM MASUK</th>
-                                    <th scope="col">JAM SELESAI</th>
+                                    <th scope="col">JAM PULANG</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,7 +63,7 @@
                                 @foreach ($data_absen as $absen)
                                 <tr>
                                     <th scope="row" class="num text-center">{{ $no }}</th>
-                                    <td>{{ $absen->date }}</td>
+                                    <td>{{ date('d F Y', strtotime($absen->date)) }}</td>
                                     <td class="text-white"><span class="bg-info px-2 py-1">{{ $absen->time_in }}</span></td>
                                     <td class="text-white"><span class="bg-info px-2 py-1">{{ $absen->time_out }}</span></td>
                                 </tr>
@@ -81,20 +86,6 @@
                             <div class="col-sm-4 px-0 offest"></div>
                         </div>
                         @endif
-                        <!--
-                        <tr class="bg-secondary text-white ">
-                            <th scope="row" class="num text-center ">2</th>
-                            <td>Minggu, 01-11-2020</td>
-                            <td><span class="px-2 py-1">-</span></td>
-                            <td><span class="px-2 py-1">-</span></td>
-                        </tr>
-                        <tr class="bg-danger text-white ">
-                            <th scope="row" class="num text-center">3</th>
-                            <td>Minggu, 01-11-2020</td>
-                            <td><span class="px-2 py-1">Tidak Hadir</span></td>
-                            <td><span class="px-2 py-1">Tidak Hadir</span></td>
-                        </tr>
-                        -->
             </div>
         </div>
     </div>
